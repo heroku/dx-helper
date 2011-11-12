@@ -2,6 +2,8 @@ require "json"
 require "sinatra"
 require "tinder"
 
+$stdout.sync = true
+
 class Web < Sinatra::Application
 
   get "/" do
