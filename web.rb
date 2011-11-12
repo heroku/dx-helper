@@ -15,9 +15,10 @@ class Web < Sinatra::Application
 
     puts payload.inspect
 
-    message = "[%s/%s] %s %s ( %s )" % [
+    message = "[%s/%s] %s %s %s ( %s )" % [
       payload["repository"]["name"],
       payload["branch"],
+      payload["commit"][0..10],
       fancy_status_message(payload),
       payload["author_name"],
       build_url(payload)
