@@ -19,7 +19,7 @@ class Web < Sinatra::Application
       payload["repository"]["name"],
       payload["branch"],
       fancy_status_message(payload),
-      payload["committer_name"],
+      payload["author_name"],
       build_url(payload)
     ]
 
