@@ -9,12 +9,12 @@ class Web < Sinatra::Application
   end
 
   post "/travis" do
-    payload = JSON.parse(request.body.read)
+    payload = JSON.parse(params[:payload])
 
     message = "[%s/%s] ci %s - %s - %s" % [
       payload["repository"]["name"],
       payload["branch"],
-      payload["status_message"].downcase,
+      fancy_status_message(payload),
       payload["committer_name"],
       build_url(payload)
     ]
@@ -32,6 +32,13 @@ protected
       payload["repository"]["name"],
       payload["id"]
     ]
+  end
+
+  def fancy_status_message(payload)
+    case payload["status_message"].downcase
+      when "passed" then "passed"
+      else "FAILED"
+    end
   end
 
   def room
