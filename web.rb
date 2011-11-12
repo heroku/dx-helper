@@ -11,6 +11,8 @@ class Web < Sinatra::Application
   post "/travis" do
     payload = JSON.parse(params[:payload])
 
+    puts payload.inspect
+
     message = "[%s/%s] ci %s - %s - %s" % [
       payload["repository"]["name"],
       payload["branch"],
