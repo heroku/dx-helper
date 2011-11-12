@@ -15,7 +15,7 @@ class Web < Sinatra::Application
 
     puts payload.inspect
 
-    message = "[%s/%s] ci %s - %s - %s" % [
+    message = "[%s/%s] %s %s ( %s )" % [
       payload["repository"]["name"],
       payload["branch"],
       fancy_status_message(payload),
@@ -40,8 +40,8 @@ protected
 
   def fancy_status_message(payload)
     case payload["status_message"].downcase
-      when "passed" then "passed"
-      else "FAILED"
+      when "passed" then ":ok:"
+      else               ":warning:"
     end
   end
 
