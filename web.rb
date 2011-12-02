@@ -26,6 +26,12 @@ class Web < Sinatra::Application
     "ok"
   end
 
+  post "/zendesk" do
+    payload = params[:payload]
+    room.speak payload
+    "ok"
+  end
+
 protected
 
   def build_url(payload)
