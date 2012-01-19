@@ -13,7 +13,7 @@ class Web < Sinatra::Application
   post "/travis" do
     payload = JSON.parse(params[:payload])
 
-    log "travis", payload, :ignore => %w( config matrix )
+    log "travis", payload, :ignore => %w( config matrix repository )
 
     message = "[%s/%s] %s %s ( %s )" % [
       payload["repository"]["name"],
@@ -54,7 +54,7 @@ protected
   def log(name, attrs, opts={})
     keys = attrs.keys.sort
     keys.reject! { |k| (opts[:ignore] || []).include?(k) }
-    flattened = keys.map { |k| "#{k}=#{attrs[k]}" }.join(" ")
+    flattened = keys.map { |k| "#{k}=\"#{attrs[k]}\"" }.join(" ")
     puts "#{name} #{flattened}"
   end
 
