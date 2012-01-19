@@ -13,6 +13,8 @@ class Web < Sinatra::Application
   post "/travis" do
     payload = JSON.parse(params[:payload])
 
+    log_json "payload", payload
+
     message = "[%s/%s] %s %s ( %s )" % [
       payload["repository"]["name"],
       payload["branch"],
@@ -47,6 +49,11 @@ protected
       when "passed" then ":ok:"
       else               ":warning:"
     end
+  end
+
+  def log_json(name, json)
+    attrs = json.keys.sort.map { |k| "#{k}=#{json[k]}" }.join(" ")
+    puts "#{name} #{attrs}"
   end
 
   def room
