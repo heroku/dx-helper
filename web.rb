@@ -13,7 +13,7 @@ class Web < Sinatra::Application
   post "/travis" do
     payload = JSON.parse(params[:payload])
 
-    log "travis", payload, :ignore => "log"
+    log "travis", payload, :ignore => %w( config matrix )
 
     message = "[%s/%s] %s %s ( %s )" % [
       payload["repository"]["name"],
