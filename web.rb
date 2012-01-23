@@ -47,6 +47,7 @@ protected
   def fancy_status_message(payload)
     case payload["status_message"].downcase
       when "passed" then ":ok:"
+      when "fixed"  then ":ok:"
       else               ":warning:"
     end
   end
