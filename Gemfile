@@ -8,5 +8,6 @@ group :production do
   gem "thin"
 end
 
+gem "rest-client"
 gem "sinatra"
 gem "tinder"

@@ -1,4 +1,5 @@
 require "json"
+require "rest_client"
 require "sinatra"
 require "tinder"
 
@@ -8,6 +9,14 @@ class Web < Sinatra::Application
 
   get "/" do
     "DX Helper"
+  end
+
+  post "/notify" do
+    if params[:service] && params[:message]
+      notify_dx params[:service], params[:message]
+    else
+      "Use 'service' and 'message' parameters"
+    end
   end
 
   post "/travis" do
@@ -23,14 +32,14 @@ class Web < Sinatra::Application
       build_url(payload)
     ]
 
-    room.speak message
+    notify_dx "travis", message
 
     "ok"
   end
 
   post "/zendesk" do
     payload = params[:payload]
-    room.speak payload
+    notify_dx "zendesk", payload
     "ok"
   end
 
@@ -59,9 +68,20 @@ protected
     puts "#{name} #{flattened}"
   end
 
-  def room
+  def campfire
     tinder = Tinder::Campfire.new(ENV["CAMPFIRE_SUBDOMAIN"], :token => ENV["CAMPFIRE_TOKEN"])
-    room = tinder.rooms.detect { |r| r.name == ENV["CAMPFIRE_ROOM"] }
+    tinder.rooms.detect { |r| r.name == ENV["CAMPFIRE_ROOM"] }
+  end
+
+  def grove
+    @grove ||= RestClient::Resource.new("https://grove.io/api/notice/#{ENV["GROVE_TOKEN"]}/")
+  end
+
+  def notify_dx(service, message)
+    full_message = "[%s] %s" % [ service, message ]
+    campfire.speak full_message
+    grove.post :service => service, :message => message
+    full_message
   end
 
 end
