@@ -24,12 +24,13 @@ class Web < Sinatra::Application
 
     log "travis", payload, :ignore => %w( config matrix repository )
 
-    message = "[%s/%s] %s %s ( %s )" % [
+    message = "[%s] %s/%s [%s] %s (%s)" % [
+      fancy_status_message(payload),
       payload["repository"]["name"],
       payload["branch"],
-      fancy_status_message(payload),
       payload["author_name"],
-      build_url(payload)
+      build_url(payload),
+      duration(payload)
     ]
 
     notify_dx "travis", message
@@ -53,11 +54,19 @@ protected
     ]
   end
 
+  def duration(payload)
+    seconds = payload["duration"] % 60
+    minutes = payload["duration"] / 60
+    duration = "#{seconds}s"
+    duration = "#{minutes}m#{duration}" if minutes > 0
+    duration
+  end
+
   def fancy_status_message(payload)
     case payload["status_message"].downcase
-      when "passed" then "[PASS]"
-      when "fixed"  then "[PASS]"
-      else               "[FAIL]"
+      when "passed" then "PASS"
+      when "fixed"  then "PASS"
+      else               "FAIL"
     end
   end
 
