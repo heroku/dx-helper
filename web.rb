@@ -16,7 +16,7 @@ class Web < Sinatra::Application
 
     log "jenkins", payload
 
-    break if [ "", "SUCCESS" ].include?(payload["build"]["status"])
+    break unless payload["build"]["phase"] == "FINISHED"
 
     message = "[%s] %s %s" % [
       payload["build"]["status"],
