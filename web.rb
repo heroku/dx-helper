@@ -11,6 +11,20 @@ class Web < Sinatra::Application
     "DX Helper"
   end
 
+  post "/jenkins" do
+    payload = JSON.parse(request.body.read)
+
+    log "jenkins", payload, :ignore => %w( build )
+
+    message = "[%s] %s %s" % [
+      payload["build"]["status"],
+      payload["name"],
+      payload["build"]["full_url"]
+    ]
+
+    notify_dx "Jenkins", message
+  end
+
   post "/notify" do
     if params[:service] && params[:message]
       notify_dx params[:service], params[:message]
