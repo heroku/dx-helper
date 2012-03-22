@@ -16,6 +16,8 @@ class Web < Sinatra::Application
 
     log "jenkins", payload, :ignore => %w( build )
 
+    break if [ "", "SUCCESS" ].include?(payload["build"]["status"])
+
     message = "[%s] %s %s" % [
       payload["build"]["status"],
       payload["name"],
