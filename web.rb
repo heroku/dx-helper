@@ -14,7 +14,7 @@ class Web < Sinatra::Application
   post "/jenkins" do
     payload = JSON.parse(request.body.read)
 
-    log "jenkins", payload, :ignore => %w( build )
+    log "jenkins", payload
 
     break if [ "", "SUCCESS" ].include?(payload["build"]["status"])
 
