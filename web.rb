@@ -16,7 +16,11 @@ class Web < Sinatra::Application
 
     log "jenkins", payload
 
+    # only show finished step
     break unless payload["build"]["phase"] == "FINISHED"
+
+    # dont show success
+    break if payload["build"]["status"] == "SUCCESS"
 
     message = "[%s] %s %s" % [
       payload["build"]["status"],
