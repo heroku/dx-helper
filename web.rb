@@ -33,14 +33,14 @@ class Web < Sinatra::Application
       duration(payload)
     ]
 
-    notify_dx "travis", message
+    notify_dx "Travis", message
 
     "ok"
   end
 
   post "/zendesk" do
     payload = params[:payload]
-    notify_dx "zendesk", payload
+    notify_dx "Zendesk", payload
     "ok"
   end
 
