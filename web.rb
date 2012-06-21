@@ -44,16 +44,14 @@ class Web < Sinatra::Application
 
     log "travis", payload, :ignore => %w( config matrix repository )
 
-    message = "[%s] %s/%s [%s] %s (%s)" % [
+    message = "%s %s/%s %s" % [
       fancy_status_message(payload),
       payload["repository"]["name"],
       payload["branch"],
-      payload["author_name"],
-      build_url(payload),
-      duration(payload)
+      build_url(payload)
     ]
 
-    notify_dx "Travis", message
+    notify_dx nil, message
 
     "ok"
   end
@@ -84,9 +82,9 @@ protected
 
   def fancy_status_message(payload)
     case payload["status_message"].downcase
-      when "passed" then "PASS"
-      when "fixed"  then "PASS"
-      else               "FAIL"
+      when "passed" then ":+1:"
+      when "fixed"  then ":+1:"
+      else               ":fire:"
     end
   end
 
@@ -107,7 +105,7 @@ protected
   end
 
   def notify_dx(service, message)
-    full_message = "[%s] %s" % [ service, message ]
+    full_message = service ? "[#{service}] #{message}" : message
     campfire.speak full_message
     grove.post :service => service, :message => message
     full_message
