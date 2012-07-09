@@ -45,7 +45,7 @@ class Web < Sinatra::Application
     log "travis", payload, :ignore => %w( config matrix repository )
 
     message = "%s %s/%s %s" % [
-      fancy_status_message(payload),
+      fancy_status_message(payload["status_message"]),
       payload["repository"]["name"],
       payload["branch"],
       build_url(payload)
@@ -80,8 +80,8 @@ protected
     duration
   end
 
-  def fancy_status_message(payload)
-    case payload["status_message"].downcase
+  def fancy_status_message(status)
+    case status.downcase
       when "passed" then ":+1:"
       when "fixed"  then ":+1:"
       else               ":fire:"
