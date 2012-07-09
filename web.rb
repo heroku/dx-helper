@@ -28,7 +28,7 @@ class Web < Sinatra::Application
       payload["build"]["full_url"]
     ]
 
-    notify_dx "Jenkins", message
+    notify_dx nil, message
   end
 
   post "/notify" do
