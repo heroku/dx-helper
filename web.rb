@@ -22,7 +22,7 @@ class Web < Sinatra::Application
     # dont show success
     break if payload["build"]["status"] == "SUCCESS"
 
-    message = "%s %s %s" % [
+    message = "%s jenkins/%s %s" % [
       fancy_status_message(payload["build"]["status"]),
       payload["name"],
       payload["build"]["full_url"]
