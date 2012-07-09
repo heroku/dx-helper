@@ -107,7 +107,7 @@ protected
   def notify_dx(service, message)
     full_message = service ? "[#{service}] #{message}" : message
     campfire.speak full_message
-    grove.post :service => service, :message => message
+    # grove.post :service => service, :message => message
     full_message
   end
 
