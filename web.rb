@@ -100,14 +100,9 @@ protected
     tinder.rooms.detect { |r| r.name == ENV["CAMPFIRE_ROOM"] }
   end
 
-  def grove
-    @grove ||= RestClient::Resource.new("https://grove.io/api/notice/#{ENV["GROVE_TOKEN"]}/")
-  end
-
   def notify_dx(service, message)
     full_message = service ? "[#{service}] #{message}" : message
     campfire.speak full_message
-    # grove.post :service => service, :message => message
     full_message
   end
 
