@@ -48,7 +48,7 @@ class Web < Sinatra::Application
       fancy_status_message(payload["status_message"]),
       payload["repository"]["name"],
       payload["branch"],
-      build_url(payload)
+      payload["build_url"]
     ]
 
     notify_dx nil, message
@@ -63,14 +63,6 @@ class Web < Sinatra::Application
   end
 
 protected
-
-  def build_url(payload)
-    "http://travis-ci.org/#!/%s/%s/builds/%s" % [
-      payload["repository"]["owner_name"],
-      payload["repository"]["name"],
-      payload["id"]
-    ]
-  end
 
   def duration(payload)
     seconds = payload["duration"] % 60
